@@ -1,5 +1,7 @@
 cd "native"
 
+export ANDROID_NDK=/Users/seekting/Library/Android/sdk/ndk/25.1.8937393
+export NDK_ROOT=/Users/seekting/Library/Android/sdk/ndk/25.1.8937393
 rm -r  CMakeFiles/
 cmake -DCMAKE_TOOLCHAIN_FILE=$NDK_ROOT/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DCMAKE_BUILD_TYPE=Release
 make

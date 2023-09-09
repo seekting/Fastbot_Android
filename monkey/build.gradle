@@ -96,7 +96,7 @@ task clearJar(type: Delete) {
 }
 
 task makeJar(type: Jar) {
-    def srcPath = 'build/intermediates/aar_main_jar/release/'
+    def srcPath = 'build/intermediates/aar_main_jar/debug/'
     def fileMonkey = file(srcPath+"classes.jar")
     from zipTree(fileMonkey)
     archiveBaseName = 'monkey'

@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.pm.IPackageManager;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.ddm.DdmHandleAppName;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Debug;
@@ -69,6 +70,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -644,7 +647,32 @@ public class Monkey {
     private int run(String[] args, String version) {
         // Super-early debugger wait
         for (String s : args) {
+            Logger.println( "Monkey arg:"+s);
             if ("--wait-dbg".equals(s)) {
+                Logger.println( "等待调试");
+                try {
+                   Class DdmHandleAppName= Class.forName("android.ddm.DdmHandleAppName");
+//                    DdmHandleAppName.setAppName("testxx", 0);
+                    Method setAppName = DdmHandleAppName.getMethod("setAppName", String.class, int.class);
+                    setAppName.invoke(null, "Monkey", 0);
+                  Class vmDebug = Class.forName("dalvik.system.VMDebug");
+                  Method[] methods = vmDebug.getDeclaredMethods();
+                  for (Method m : methods) {
+                    if (m.getName().equals("isDebuggingEnabled")) {
+                      Object ret = m.invoke(null);
+                      Logger.println("等待调试" + ret);
+                    }
+                  }
+
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
                 Debug.waitForDebugger();
             }
         }
@@ -659,7 +687,9 @@ public class Monkey {
         // prepare for command-line processing
         mArgs = args;
         mNextArg = 0;
-
+        if(true){
+            return 0;
+        }
         // set a positive value, indicating none of the factors is provided yet
         for (int i = 0; i < MonkeySourceRandom.FACTORZ_COUNT; i++) {
             mFactors[i] = 1.0f;
