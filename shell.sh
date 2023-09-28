@@ -1,3 +1,4 @@
+#文章来源：https://github.com/5ec1cff/my-notes/blob/master/debug-app-process.md
 export pkg=com.smile.gifmaker
 function build(){
 ./gradlew  makeJar
