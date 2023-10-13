@@ -687,9 +687,9 @@ public class Monkey {
         // prepare for command-line processing
         mArgs = args;
         mNextArg = 0;
-        if(true){
-            return 0;
-        }
+//        if(true){
+//            return 0;
+//        }
         // set a positive value, indicating none of the factors is provided yet
         for (int i = 0; i < MonkeySourceRandom.FACTORZ_COUNT; i++) {
             mFactors[i] = 1.0f;

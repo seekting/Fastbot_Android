@@ -4,9 +4,11 @@ function build(){
 ./gradlew  makeJar
 ~/Library/Android/sdk/build-tools/28.0.3/dx --dex --output=monkeyq.jar monkey/build/libs/monkey.jar
 adb push *.jar /sdcard
+adb push libs/* /data/local/tmp/
 }
-function monkey(){
-adb  shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p $pkg --agent reuseq --running-minutes 30 --throttle 500 -v -v
+function bmonkey(){
+minutes=240
+adb  shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process /system/bin com.android.commands.monkey.Monkey -p $pkg --agent reuseq --running-minutes $minutes --throttle 500 -v -v
 }
 function debug(){
 #adb  shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar exec app_process -Ddebuggable=true /system/bin com.android.commands.monkey.Monkey -p $pkg --wait-dbg  --agent reuseq --running-minutes 30 --throttle 500 -v -v
